@@ -21,7 +21,7 @@ type Job = Box<dyn FnOnce() + Send + 'static>;
 
 impl Worker {
     fn new(id: usize, receiver: Arc<Mutex<mpsc::Receiver<Message>>>) -> Worker {
-        let thread = thread::Builder::new().name(format!("conn_{}", id)).spawn(move || loop {
+        let thread = thread::Builder::new().name(format!("worker_{}", id)).spawn(move || loop {
             let message = receiver.lock().unwrap().recv().unwrap();
 
             match message {
